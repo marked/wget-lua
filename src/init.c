@@ -237,6 +237,9 @@ static const struct {
   { "localencoding",    &opt.locale,            cmd_string },
   { "logfile",          &opt.lfilename,         cmd_file },
   { "login",            &opt.ftp_user,          cmd_string },/* deprecated*/
+#ifdef ENABLE_LUA
+  { "luafilename",      &opt.lua_filename,      cmd_file },
+#endif
   { "maxredirect",      &opt.max_redirect,      cmd_number },
 #ifdef HAVE_METALINK
   { "metalink-over-http", &opt.metalink_over_http, cmd_boolean },
@@ -292,6 +295,7 @@ static const struct {
   { "retrsymlinks",     &opt.retr_symlinks,     cmd_boolean },
   { "retryconnrefused", &opt.retry_connrefused, cmd_boolean },
   { "robots",           &opt.use_robots,        cmd_boolean },
+  { "rotatedns",        &opt.rotate_dns,        cmd_boolean },
   { "savecookies",      &opt.cookies_output,    cmd_file },
   { "saveheaders",      &opt.save_headers,      cmd_boolean },
 #ifdef HAVE_SSL
@@ -307,6 +311,7 @@ static const struct {
   { "timeout",          NULL,                   cmd_spec_timeout },
   { "timestamping",     &opt.timestamping,      cmd_boolean },
   { "tries",            &opt.ntry,              cmd_number_inf },
+  { "truncateoutput",   &opt.truncate_output_document, cmd_boolean },
   { "trustservernames", &opt.trustservernames,  cmd_boolean },
   { "unlink",           &opt.unlink,            cmd_boolean },
   { "useproxy",         &opt.use_proxy,         cmd_boolean },
@@ -451,6 +456,8 @@ defaults (void)
 
   opt.useservertimestamps = true;
   opt.show_all_dns_entries = false;
+
+  opt.truncate_output_document = false;
 
   opt.warc_maxsize = 0; /* 1024 * 1024 * 1024; */
 #ifdef HAVE_LIBZ
